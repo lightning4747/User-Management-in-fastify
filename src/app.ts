@@ -1,8 +1,26 @@
-import Fastify, { type FastifyInstance } from 'fastify'
+import Fastify, { FastifyReply, FastifyRequest, type FastifyInstance } from 'fastify'
+import { validatorCompiler, serializerCompiler, jsonSchemaTransform } from "@fastify/type-provider-zod";
 import userRoutes from './modules/user/user.routes.js';
+import fjwt from '@fastify/jwt';    
 
-const server: FastifyInstance = Fastify();
+export const server: FastifyInstance = Fastify();
 const PORT = 3000;
+
+server.register(fjwt, {
+    secret: "fweovskjfdukfdsukggudsggiufdsguidfsgkjgsdgkkh"
+});
+
+server.decorate("authenticate", async (req: FastifyRequest, res: FastifyReply) => {
+    try {
+        await req.jwtVerify()
+    }
+    catch(e) {
+        res.send(e);
+    }
+})
+
+server.setValidatorCompiler(validatorCompiler);
+server.setSerializerCompiler(serializerCompiler);
 
 server.get('/health', (req, res) => {
     return res.code(200).send({ status: "OK"});
