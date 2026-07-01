@@ -36,8 +36,19 @@ export const LoginResponse = z.object({
   accessToken: z.string()
 });
 
+export const getUserResponseSchema = z.object({
+  id: z.number(),
+  email : z.string()
+           .trim()
+           .min(1, { message: "Email is required" })
+           .email({ message: "Invalid email format" }),
+  name : z.string().nullable()         
+});
+
+export const getUserListResponse = z.array(getUserResponseSchema);
 
 export type CreateUserInput = z.infer<typeof createUserSchema>;
 export type CreateUserResponseInput = z.infer<typeof createUserResponseSchema>;
 export type LoginRequest = z.infer<typeof LoginSchema>
 export type LoginResponse = z.infer<typeof LoginResponse>
+export type getUserResponseSchema = z.infer<typeof getUserResponseSchema>
