@@ -50,5 +50,5 @@ export const getUserListResponse = z.array(getUserResponseSchema);
 export type CreateUserInput = z.infer<typeof createUserSchema>;
 export type CreateUserResponseInput = z.infer<typeof createUserResponseSchema>;
 export type LoginRequest = z.infer<typeof LoginSchema>
-export type LoginResponse = z.infer<typeof LoginResponse>
-export type getUserResponseSchema = z.infer<typeof getUserResponseSchema>
+export type LoginResponseBody = z.infer<typeof LoginResponse>
+export type GetUserResponse = z.infer<typeof getUserResponseSchema>

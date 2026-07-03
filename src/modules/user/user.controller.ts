@@ -24,7 +24,6 @@ export const loginHandler = async (req: FastifyRequest <{ Body: LoginRequest }>,
 
     if(!user) return res.code(404).send({message: "invalid mail or password"});
 
-    const {password, salt, ...rest} = user;
     const correctPassword = verifyPassword({
         candidatePassword: data.password,
         salt: user.salt,

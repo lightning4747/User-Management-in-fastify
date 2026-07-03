@@ -22,6 +22,7 @@ async function userRoutes(fastify: FastifyInstance) {
     }, loginHandler)
 
     server.get('/', {
+        preHandler: [server.authenticate],
         schema: {
             response: { 200: getUserListResponse }
         }

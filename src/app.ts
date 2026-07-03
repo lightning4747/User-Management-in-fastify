@@ -1,10 +1,26 @@
 import Fastify, { FastifyReply, FastifyRequest, type FastifyInstance } from 'fastify'
-import { validatorCompiler, serializerCompiler, jsonSchemaTransform } from "@fastify/type-provider-zod";
+import { validatorCompiler, serializerCompiler } from "@fastify/type-provider-zod";
 import userRoutes from './modules/user/user.routes.js';
 import fjwt from '@fastify/jwt';    
+import productRoutes from "./modules/product/product.routes.js";
 
 export const server: FastifyInstance = Fastify();
 const PORT = 3000;
+declare module "fastify" {
+    export interface FastifyInstance {
+        authenticate: any;
+    }
+}
+
+declare module "@fastify/jwt" {
+    export interface FastifyIJwt {
+        user: {
+            id: string;
+            name: string;
+            email: string;
+        }
+    }
+}
 
 server.register(fjwt, {
     secret: "fweovskjfdukfdsukggudsggiufdsguidfsgkjgsdgkkh"
@@ -19,6 +35,7 @@ server.decorate("authenticate", async (req: FastifyRequest, res: FastifyReply) =
     }
 })
 
+
 server.setValidatorCompiler(validatorCompiler);
 server.setSerializerCompiler(serializerCompiler);
 
@@ -29,6 +46,7 @@ server.get('/health', (req, res) => {
 const main = async () => {
 
     server.register(userRoutes, {prefix: '/user'});
+    server.register(productRoutes, {prefix: '/product'});
 
     try {
         await server.listen({ port: PORT, host: '0.0.0.0'});
