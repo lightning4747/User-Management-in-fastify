@@ -26,7 +26,7 @@ model Product {
   create_at DateTime @default(now())
   update_at DateTime @updatedAt
   title String
-  content String
+  content String?
   price Float
   owner User @relation(fields: [ownerId], references: [id])
   ownerId Int
